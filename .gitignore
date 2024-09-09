@@ -1,0 +1,41 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Compiled output
+dist/
+out/
+*.js
+*.js.map
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Debugging and test artifacts
+.vscode-test/
+
+# VS Code settings
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# esbuild output
+*.esbuild
+
+# Extensions
+*.vsix
+
+# Test output
+out/
