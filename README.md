@@ -32,7 +32,7 @@ When you hover over `[[MyOtherNote]]`, you'll see a tooltip. Click on the link, 
 ## Installation
 
 1. Open VS Code.
-2. Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side of the window or using the shortcut Ctrl+Shift+X.
+2. Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side of the window or using the shortcut `Ctrl+Shift+X`.
 3. Search for Obsidian Navigation.
 4. Click Install.
 
