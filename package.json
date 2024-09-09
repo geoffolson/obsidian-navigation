@@ -2,7 +2,7 @@
   "name": "obsidian-navigation",
   "displayName": "Obsidian Navigation",
   "description": "Navigate your obsidian notes in vscode",
-  "publisher": "Geoffrey Olson Jr.",
+  "publisher": "GeoffreyOlsonJr",
   "repository": {
     "type": "git",
     "url": "https://github.com/geoffolson/obsidian-navigation.git"
