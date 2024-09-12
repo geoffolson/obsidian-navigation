@@ -1,6 +1,34 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
+import markdownit from "markdown-it";
+
+// plugin to replace obsidian [[internal-link]] with valid markdown internal links
+const replaceFilenamePlugin = (md: markdownit) => {
+  md.core.ruler.push("replace_filename", (state) => {
+    const Token = state.Token;
+
+    state.tokens.forEach((blockToken) => {
+      if (blockToken.type === "inline" && blockToken.children) {
+        blockToken.children.forEach((token, idx) => {
+          if (token.type === "text" && blockToken.children) {
+            const text = token.content;
+
+            // Regex to match [[filename]]
+            const regex = /\[\[([^\]]+)\]\]/g;
+            const newContent = text.replace(regex, "foo-bar");
+
+            if (newContent !== text) {
+              const newToken = new Token("text", "", 0);
+              newToken.content = newContent;
+              blockToken.children[idx] = newToken;
+            }
+          }
+        });
+      }
+    });
+  });
+};
 
 export function activate(context: vscode.ExtensionContext) {
   // Register a hover provider for markdown files
@@ -32,6 +60,13 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(hoverProvider);
+
+  // extending the markdown preview
+  return {
+    extendMarkdownIt(md: markdownit) {
+      return md.use(replaceFilenamePlugin);
+    },
+  };
 }
 
 export function deactivate() {}
