@@ -20,10 +20,6 @@
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "obsidian-links.helloWorld",
-        "title": "Hello World"
-      }
     ]
   },
   "scripts": {
