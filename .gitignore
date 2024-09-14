@@ -39,3 +39,6 @@ coverage/
 
 # Test output
 out/
+
+# vscode  history
+.history
