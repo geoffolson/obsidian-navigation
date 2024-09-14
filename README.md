@@ -51,6 +51,7 @@ When you hover over `[[MyOtherNote]]`, you'll see a tooltip with matching files 
 ## Known Issues
 
 - **Preview Section:** The extension does not currently support link navigation from the Markdown preview pane, only from the text editor.
+- **File Scope:** The extension searches for .md files within your current workspace. Files outside the workspace won't be opened.
 
 ## Planned Features
 
