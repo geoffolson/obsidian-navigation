@@ -20,7 +20,22 @@
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
-    ]
+      {
+        "command": "obsidian-navigation.createFile",
+        "title": "Obsidian Navigation: Create File in Inbox"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Obsidian Navigation",
+      "properties": {
+        "obsidian-navigation.inboxFolder": {
+          "type": "string",
+          "default": "Inbox/",
+          "description": "Folder where new files are created when not found."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

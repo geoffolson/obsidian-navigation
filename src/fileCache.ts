@@ -25,10 +25,10 @@ function recursiveSearch(dir: string, workspaceRoot: string) {
     } else if (stats.isFile() && path.extname(fullPath) === ".md") {
       const relativePath = path.relative(workspaceRoot, fullPath);
       const fileName = path.basename(fullPath, ".md");
-      if (fileCache.has(fileName)) {
-        fileCache.get(fileName)?.push(relativePath);
+      if (fileCache.has(fileName.toLowerCase())) {
+        fileCache.get(fileName.toLowerCase())?.push(relativePath);
       } else {
-        fileCache.set(fileName, [relativePath]);
+        fileCache.set(fileName.toLowerCase(), [relativePath]);
       }
     }
   });
@@ -39,20 +39,21 @@ export function getFileCache(): Map<string, string[]> {
 }
 
 export function updateFileCache(fileName: string, relativePath: string, isDelete: boolean = false) {
+  const lowerFileName = fileName.toLowerCase();
   if (isDelete) {
-    if (fileCache.has(fileName)) {
-      const updatedPaths = fileCache.get(fileName)?.filter(p => p !== relativePath) || [];
+    if (fileCache.has(lowerFileName)) {
+      const updatedPaths = fileCache.get(lowerFileName)?.filter(p => p !== relativePath) || [];
       if (updatedPaths.length > 0) {
-        fileCache.set(fileName, updatedPaths);
+        fileCache.set(lowerFileName, updatedPaths);
       } else {
-        fileCache.delete(fileName);
+        fileCache.delete(lowerFileName);
       }
     }
   } else {
-    if (fileCache.has(fileName)) {
-      fileCache.get(fileName)?.push(relativePath);
+    if (fileCache.has(lowerFileName)) {
+      fileCache.get(lowerFileName)?.push(relativePath);
     } else {
-      fileCache.set(fileName, [relativePath]);
+      fileCache.set(lowerFileName, [relativePath]);
     }
   }
 }
