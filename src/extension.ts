@@ -1,23 +1,17 @@
 import * as vscode from "vscode";
-import * as path from "path";
-import * as fs from "fs";
 
 export function activate(context: vscode.ExtensionContext) {
   // Register a hover provider for markdown files
   const hoverProvider = vscode.languages.registerHoverProvider("markdown", {
-    provideHover(document, position, token) {
+    async provideHover(document, position, token) {
       const range = document.getWordRangeAtPosition(position, /\[\[(.*?)\]\]/);
       if (range) {
         const fileName = document
           .getText(range)
           .replace(/\[\[|\]\]/g, "")
           .trim();
-        const filePath = vscode.workspace.rootPath
-          ? path.join(vscode.workspace.rootPath, `${fileName}.md`)
-          : null;
-
-        if (filePath && fs.existsSync(filePath)) {
-          const uri = vscode.Uri.file(filePath);
+        const uri = (await vscode.workspace.findFiles(`**/${fileName}.md`))[0];
+        if (uri) {
           const markdownString = new vscode.MarkdownString(
             `[Go to ${fileName}](${uri})`
           );
@@ -27,7 +21,6 @@ export function activate(context: vscode.ExtensionContext) {
           return new vscode.Hover(`File ${fileName}.md not found.`);
         }
       }
-      return undefined;
     },
   });
 
