@@ -4,6 +4,10 @@ All notable changes to the "obsidian-links" extension will be documented in this
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.4] - 2024-09-19
+
+- Add icon for extension
+
 ## [0.0.3] - 2024-09-19
 
 - Add support for link aliases eg: `[[CHANGELOG|Changelog]]`
