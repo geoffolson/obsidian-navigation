@@ -7,10 +7,11 @@ export function activate(context: vscode.ExtensionContext) {
       const range = document.getWordRangeAtPosition(position, /\[\[(.*?)\]\]/);
       if (!range) return;
 
-      const fileName = document
+      const [fileName] = document
         .getText(range)
         .replace(/\[\[|\]\]/g, "")
-        .trim();
+        .trim()
+        .split("|");
 
       const uri = (await vscode.workspace.findFiles(`**/${fileName}.md`))[0];
       if (!uri) return new vscode.Hover(`File ${fileName}.md not found.`);
