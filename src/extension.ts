@@ -13,7 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
         .trim()
         .split("|");
 
-      const uri = (await vscode.workspace.findFiles(`**/${fileName}.md`))[0];
+      const [uri] = await vscode.workspace.findFiles(`**/${fileName}.md`);
       if (!uri) return new vscode.Hover(`File ${fileName}.md not found.`);
 
       const markdownString = new vscode.MarkdownString(
