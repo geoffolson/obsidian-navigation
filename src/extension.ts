@@ -1,6 +1,4 @@
 import * as vscode from "vscode";
-import * as path from "path";
-import * as fs from "fs";
 import markdownit from "markdown-it";
 
 // plugin to replace obsidian [[internal-link]] with valid markdown internal links
@@ -31,35 +29,49 @@ const replaceFilenamePlugin = (md: markdownit) => {
 };
 
 export function activate(context: vscode.ExtensionContext) {
+  const fileCache = new Map<string, vscode.Uri>();
+
+  const findFile = async (fileName: string) => {
+    let uri = fileCache.get(fileName);
+    if (uri) return uri;
+    [uri] = await vscode.workspace.findFiles(`**/${fileName}.md`);
+    if (uri) fileCache.set(fileName, uri);
+    return uri;
+  };
+
+  const evictStaleEntries = (uri: vscode.Uri) => {
+    for (const [filename] of fileCache) {
+      const pattern = new RegExp(`${filename}.md$`);
+      if (pattern.test(uri.path)) fileCache.delete(filename);
+    }
+  };
+  const fileSystemWatcher = vscode.workspace.createFileSystemWatcher("**/*.md");
+  fileSystemWatcher.onDidCreate(evictStaleEntries); // remove cached filenames in the case this is a duplicate filename
+  fileSystemWatcher.onDidDelete(evictStaleEntries);
+
   // Register a hover provider for markdown files
   const hoverProvider = vscode.languages.registerHoverProvider("markdown", {
-    provideHover(document, position, token) {
+    async provideHover(document, position, token) {
       const range = document.getWordRangeAtPosition(position, /\[\[(.*?)\]\]/);
-      if (range) {
-        const fileName = document
-          .getText(range)
-          .replace(/\[\[|\]\]/g, "")
-          .trim();
-        const filePath = vscode.workspace.rootPath
-          ? path.join(vscode.workspace.rootPath, `${fileName}.md`)
-          : null;
+      if (!range) return;
 
-        if (filePath && fs.existsSync(filePath)) {
-          const uri = vscode.Uri.file(filePath);
-          const markdownString = new vscode.MarkdownString(
-            `[Go to ${fileName}](${uri})`
-          );
-          markdownString.isTrusted = true; // Allow the link to be clickable
-          return new vscode.Hover(markdownString, range);
-        } else {
-          return new vscode.Hover(`File ${fileName}.md not found.`);
-        }
-      }
-      return undefined;
+      const [fileName] = document
+        .getText(range)
+        .replace(/\[\[|\]\]/g, "")
+        .trim()
+        .split("|");
+
+      const uri = await findFile(fileName);
+      if (!uri) return new vscode.Hover(`File ${fileName}.md not found.`);
+
+      const markdownString = new vscode.MarkdownString(`[Go to ${fileName}](${uri})`);
+      markdownString.isTrusted = true; // Allow the link to be clickable
+      return new vscode.Hover(markdownString, range);
     },
   });
 
   context.subscriptions.push(hoverProvider);
+  context.subscriptions.push(fileSystemWatcher);
 
   // extending the markdown preview
   return {

@@ -7,7 +7,8 @@
     "type": "git",
     "url": "https://github.com/geoffolson/obsidian-navigation.git"
   },
-  "version": "0.0.1",
+  "icon": "images/icon.png",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.93.0"
   },
@@ -19,7 +20,8 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "markdown.markdownItPlugins": true
+    "markdown.markdownItPlugins": true,
+    "commands": []
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

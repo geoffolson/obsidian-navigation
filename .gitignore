@@ -21,9 +21,6 @@ yarn-error.log*
 # Debugging and test artifacts
 .vscode-test/
 
-# VS Code settings
-.vscode/
-
 # OS-specific files
 .DS_Store
 Thumbs.db

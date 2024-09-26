@@ -46,7 +46,8 @@ When you hover over `[[MyOtherNote]]`, you'll see a tooltip. Click on the link, 
 - Support for Markdown Preview: Future updates will include functionality to jump between links in the rendered Markdown preview window.
 - Better Link Error Handling: Improvements to handle invalid or broken links more gracefully.
   Contributing
-  If you have any ideas, requests, or bug reports, feel free to open an issue or contribute via pull requests on the project's repository.
+  If you have any ideas, requests, or bug reports, feel free to open an issue or contribute via pnticatedUser =
+  | AuthenticatedAdmull requests on the project's repository.
 
 ## License
 
